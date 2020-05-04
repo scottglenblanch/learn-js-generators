@@ -14,14 +14,12 @@ const iter = generator();
 const list = [
   'a', 'b', 'c', 'd', 'e'
 ]
+const promiseList = list.map(c => new Promise(resolve => {
+  setTimeout(() => {
+    resolve(c)
+  }, getRandomTime())
+}))
 
 iter.next();
 
-list.forEach(c => {
- setTimeout(() => {
-   iter.next(c)
- }, getRandomTime())
-})
-
-
-
+promiseList.forEach(p => p.then(c => iter.next(c)))
